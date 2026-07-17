@@ -3,293 +3,501 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Development Portfolio</title>
+    <title>CourseHub - Frontend Development</title>
     <style>
-        /* Base Reset & Variables */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        :root {
-            --bg-color: #0b0f19;
-            --card-bg: #111827;
-            --border-color: #1f2937;
-            --accent-color: #6366f1;
-            --text-main: #ffffff;
-            --text-muted: #9ca3af;
+            font-family: 'Segoe UI', system-ui, sans-serif;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.6;
+            background-color: #0b111e;
+            color: #e2e8f0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
-        /* Semantic Navigation Header */
-        header {
+        /* Login Block Screen */
+        #login-screen {
             position: fixed;
             top: 0;
+            left: 0;
             width: 100%;
-            background-color: var(--card-bg);
-            border-bottom: 1px solid var(--border-color);
-            z-index: 1000;
+            height: 100%;
+            background-color: #0b111e;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        nav {
-            max-width: 1200px;
-            margin: 0 auto;
+        .login-box {
+            background-color: #111827;
+            border: 1px solid #1f2937;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .login-box h2 {
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .login-box p {
+            color: #9ca3af;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .login-box input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            background-color: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 6px;
+            color: white;
+            font-size: 16px;
+            text-align: center;
+            margin-bottom: 15px;
+            outline: none;
+        }
+
+        .login-box button {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .error-msg {
+            color: #ef4444;
+            font-size: 13px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* Navigation Header */
+        header {
+            background-color: #111827;
+            border-bottom: 1px solid #1f2937;
+            padding: 15px 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 20px;
+            height: 65px;
         }
 
-        nav h1 {
-            font-size: 22px;
-            color: var(--accent-color);
-            font-weight: 700;
-        }
-
-        nav ul {
+        .brand-box {
             display: flex;
-            list-style: none;
-            gap: 20px;
-        }
-
-        nav ul li a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-
-        nav ul li a:hover {
-            color: var(--accent-color);
-        }
-
-        /* Main Viewport Container */
-        main {
-            max-width: 1200px;
-            margin: 80px auto 40px auto;
-            padding: 0 20px;
-        }
-
-        /* Common Section Styling */
-        section {
-            padding: 60px 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        section h2 {
-            font-size: 28px;
-            margin-bottom: 15px;
-            color: var(--text-main);
-            position: relative;
-            display: inline-block;
-        }
-
-        section h2::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 40px;
-            height: 3px;
-            background-color: var(--accent-color);
-        }
-
-        section p {
-            color: var(--text-muted);
-            margin-bottom: 20px;
-            max-width: 700px;
-        }
-
-        /* Home Hero Grid */
-        #home {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            min-height: 70vh;
-        }
-
-        #home h3 {
+            align-items: center;
+            gap: 10px;
             font-size: 18px;
-            color: var(--accent-color);
-            margin-bottom: 10px;
+            font-weight: 700;
+            color: #ffffff;
         }
 
-        #home h1 {
-            font-size: 48px;
-            margin-bottom: 15px;
+        .brand-icon {
+            color: #3b82f6;
+            font-size: 22px;
         }
 
-        /* Skills Layout */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 25px;
-        }
-
-        .skill-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
+        .btn-leaderboard {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
             font-weight: 600;
         }
 
-        /* Portfolio Cards Grid using Article Tags */
-        .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-top: 25px;
+        .user-badge {
+            background-color: #1f2937;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #3b82f6;
+            font-weight: 700;
+            border: 1px solid #374151;
         }
 
-        .project-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
+        /* Workspace Grid Split Layout */
+        .dashboard-container {
+            display: flex;
+            flex: 1;
+            height: calc(100vh - 65px);
             overflow: hidden;
+        }
+
+        /* Sidebar Playlist */
+        aside {
+            width: 320px;
+            background-color: #111827;
+            border-right: 1px solid #1f2937;
             display: flex;
             flex-direction: column;
         }
 
-        .project-content {
-            padding: 20px;
+        .playlist-header {
+            padding: 15px 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #6b7280;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #1f2937;
         }
 
-        .project-content h3 {
-            font-size: 18px;
-            margin-bottom: 10px;
-            color: var(--text-main);
+        .playlist-scroll {
+            flex: 1;
+            overflow-y: auto;
         }
 
-        /* Contact Details Section */
-        .contact-info {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            padding: 30px;
-            border-radius: 8px;
-            margin-top: 25px;
+        .playlist-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #1f2937;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
         }
 
-        .contact-info ul {
-            list-style: none;
+        .playlist-item.active {
+            background-color: #151f32;
+            border-left: 3px solid #3b82f6;
         }
 
-        .contact-info ul li {
-            margin-bottom: 12px;
-            color: var(--text-muted);
+        .video-meta {
+            font-size: 10px;
+            font-weight: 700;
+            color: #3b82f6;
+            text-transform: uppercase;
         }
 
-        .contact-info ul li strong {
-            color: var(--text-main);
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 20px;
-            color: var(--text-muted);
+        .video-title {
             font-size: 13px;
-            border-top: 1px solid var(--border-color);
-            background-color: var(--card-bg);
+            color: #f3f4f6;
+            line-height: 1.4;
+        }
+
+        /* Main Player & Topics Area */
+        main {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+            background-color: #0b111e;
+        }
+
+        .video-wrapper {
+            width: 100%;
+            aspect-ratio: 16/9;
+            max-height: 440px;
+            background-color: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 1px solid #1f2937;
+        }
+
+        .video-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .current-video-info {
+            margin-bottom: 25px;
+        }
+
+        .current-video-info h2 {
+            font-size: 18px;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        /* Step by Step Topics Card Structure */
+        .topic-section {
+            background-color: #111827;
+            border: 1px solid #1f2937;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #9ca3af;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .topic-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-top: 1px solid #1f2937;
+        }
+
+        .topic-row input[type="checkbox"] {
+            margin-top: 3px;
+            width: 16px;
+            height: 16px;
+            accent-color: #3b82f6;
+            cursor: pointer;
+        }
+
+        .topic-row label {
+            font-size: 14px;
+            color: #d1d5db;
+            cursor: pointer;
+            line-height: 1.4;
+        }
+
+        /* Overlay Leaderboard Layout */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 5000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-card {
+            background-color: #111827;
+            border: 1px solid #1f2937;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 480px;
+            padding: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #1f2937;
+            padding-bottom: 15px;
+        }
+
+        .student-list {
+            max-height: 380px;
+            overflow-y: auto;
+        }
+
+        .student-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 10px;
+            border-bottom: 1px solid #1f2937;
+        }
+
+        .student-row.highlight {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-radius: 6px;
+            border: 1px solid rgba(59, 130, 246, 0.4);
+        }
+
+        .bar-bg {
+            width: 120px;
+            height: 6px;
+            background-color: #1f2937;
+            border-radius: 3px;
+            display: inline-block;
+            margin-right: 10px;
+            overflow: hidden;
+            vertical-align: middle;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background-color: #f59e0b;
         }
     </style>
 </head>
 <body>
 
-    <!-- Header & Navigation -->
+    <!-- Protected Gateway Login Module -->
+    <div id="login-screen">
+        <div class="login-box">
+            <h2>CourseHub</h2>
+            <p>Apna confidential student access key enter karein.</p>
+            <input type="password" id="pass-input" placeholder="Enter Student Password...">
+            <button onclick="checkPassword()">Verify Student</button>
+            <div id="error-message" class="error-msg">Invalid password entry! Try again.</div>
+        </div>
+    </div>
+
+    <!-- Active Portal Layout -->
     <header>
-        <nav>
-            <h1>Hania.Dev</h1>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#portfolio">Portfolio</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
+        <div class="brand-box">
+            <span class="brand-icon">▶</span>
+            <span>CourseHub</span>
+        </div>
+        <div style="display: flex; gap: 15px; align-items: center;">
+            <button class="btn-leaderboard" onclick="toggleModal(true)">📊 All Students Progress</button>
+            <div class="user-badge" id="student-tag">STUDENT</div>
+        </div>
     </header>
 
-    <!-- Main Content Area -->
-    <main>
-        
-        <!-- Home Section -->
-        <section id="home">
-            <h3>Hello World, I'm</h3>
-            <h1>Frontend Web Developer</h1>
-            <p>I focus on building clean, semantic, and minimalistic user interfaces that deliver exceptional dynamic user experiences.</p>
-        </section>
-
-        <!-- About Section -->
-        <section id="about">
-            <h2>About Me</h2>
-            <p>I am a passionate Frontend Developer learning to create structured web layouts. I have serious passion for UI effects, animations, and clean, professional programming standards.</p>
-        </section>
-
-        <!-- Skills Section -->
-        <section id="skills">
-            <h2>My Skills</h2>
-            <p>Our technical skills make us strong for our future web development journey.</p>
-            <div class="skills-grid">
-                <div class="skill-card">HTML5 (Semantic)</div>
-                <div class="skill-card">CSS3 (Grid & Flexbox)</div>
-                <div class="skill-card">JavaScript (ES6)</div>
-                <div class="skill-card">VS Code & Git</div>
+    <div class="dashboard-container">
+        <!-- Sidebar Playlist Navigation -->
+        <aside>
+            <div class="playlist-header">Course Playlist (9 Videos)</div>
+            <div class="playlist-scroll">
+                <div class="playlist-item active">
+                    <span class="video-meta">Video 1</span>
+                    <p class="video-title">HTML Tutorial for Beginners | Complete HTML with Notes & Code</p>
+                </div>
+                <div class="playlist-item">
+                    <span class="video-meta">Video 2</span>
+                    <p class="video-title">CSS Tutorial for Beginners | Complete CSS with Project...</p>
+                </div>
+                <div class="playlist-item">
+                    <span class="video-meta">Video 3</span>
+                    <p class="video-title">Building AMAZON Clone for Beginners | Project using HT...</p>
+                </div>
             </div>
-        </section>
+        </aside>
 
-        <!-- Portfolio Section using Semantic Articles -->
-        <section id="portfolio">
-            <h2>Portfolio</h2>
-            <p>Here are some of the web projects I have built and audited codebase for:</p>
-            <div class="portfolio-grid">
+        <!-- Main Workspace Viewport -->
+        <main>
+            <section class="video-wrapper">
+                <!-- Sourced Dynamic Embed URL configured from YouTube -->
+                <iframe id="main-player" src="https://www.youtube.com/embed/rXLvN1FEkOE" allowfullscreen></iframe>
+            </section>
+
+            <div class="current-video-info">
+                <span class="video-meta">Video 1</span>
+                <h2>HTML Tutorial for Beginners | Complete HTML with Notes & Code</h2>
+            </div>
+
+            <!-- Segmented Progress Checkboxes mapping to the interface architecture -->
+            <div class="topic-section">
+                <div class="section-title"><span>📚 Introduction to our Environment Setup</span> <span>00:00</span></div>
+                <div class="topic-row">
+                    <input type="checkbox" id="t1"><label for="t1">VS Code aur Live Server extension ko download aur install karna.</label>
+                </div>
+                <div class="topic-row">
+                    <input type="checkbox" id="t2"><label for="t2">Web Frontend Architecture (HTML, CSS, JS ka role) ka concept samajhna.</label>
+                </div>
+            </div>
+
+            <div class="topic-section">
+                <div class="section-title"><span>📝 Basic HTML Elements & Anatomy</span> <span>08:24</span></div>
+                <div class="topic-row">
+                    <input type="checkbox" id="t3"><label for="t3">HTML tags ka basic structure (Opening tag, Content, aur Closing tag) seekhna.</label>
+                </div>
+                <div class="topic-row">
+                    <input type="checkbox" id="t4"><label for="t4">Apni pehli index.html file banana aur Boilerplate code (!) generate karna.</label>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Leaderboard Overlay View -->
+    <div class="modal-overlay" id="leaderboard-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Students Progress (18 Enrolled)</h3>
+                <button style="background:none; border:none; color:#9ca3af; font-size:22px; cursor:pointer;" onclick="toggleModal(false)">&times;</button>
+            </div>
+            <div class="student-list" id="leaderboard-target">
+                <!-- Rendered asynchronously by runtime database below -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mapped Database matching student records 
+        const studentsDb = {
+            "abdullah786": { name: "Abdullah/Muneeb", progress: "45%" },
+            "adnan123": { name: "Adnan Khan", progress: "60%" },
+            "ahmad555": { name: "Ahmad / Faizan", progress: "30%" },
+            "aiza99": { name: "Aiza Rao", progress: "75%" },
+            "amber88": { name: "Amber Ayoob/Bhai", progress: "50%" },
+            "armish22": { name: "Armish (Aisha Jabbar Down)", progress: "40%" },
+            "ayesha11": { name: "Ayesha /Bhai", progress: "90%" },
+            "azan44": { name: "Azan/Muneeb", progress: "20%" },
+            "faizan77": { name: "Faizan/Muskan", progress: "65%" },
+            "faraz33": { name: "Faraz/Bhai", progress: "15%" },
+            "hadia00": { name: "Hadia Waseem", progress: "85%" },
+            "irfan66": { name: "Irfan /Mehreen", progress: "55%" },
+            "jaweria44": { name: "Jaweria Nawaz (Farwa Down)", progress: "70%" },
+            "kashaf77": { name: "Kashaf Nosheen/Ayesh Maryam", progress: "80%" },
+            "muneeb12": { name: "MUNEEB SHAHZAD", progress: "40%" },
+            "muskan99": { name: "Muskan Fatima", progress: "95%" },
+            "rahila88": { name: "Rahila/Mehreen", progress: "35%" },
+            "sameer55": { name: "Sameer/Mehreen", progress: "50%" },
+            "shaista11": { name: "Shaista /Mehreen", progress: "60%" },
+            "shanza33": { name: "shanza zameer", progress: "45%" },
+            "shanzey22": { name: "Shanzey/Jaweria", progress: "70%" },
+            "sumaika10": { name: "Sumaika /Muskan", progress: "80%" },
+            "wajahat00": { name: "WAJAHAT/Shaista", progress: "25%" }
+        };
+
+        let loggedInUser = "";
+
+        function checkPassword() {
+            const pass = document.getElementById("pass-input").value.trim();
+            if (studentsDb[pass]) {
+                loggedInUser = studentsDb[pass].name;
+                document.getElementById("student-tag").innerText = "👤 " + loggedInUser.split('/')[0].toUpperCase();
+                document.getElementById("login-screen").style.display = "none";
+                buildLeaderboard();
+            } else {
+                document.getElementById("error-message").style.display = "block";
+            }
+        }
+
+        function buildLeaderboard() {
+            const container = document.getElementById("leaderboard-target");
+            container.innerHTML = "";
+            
+            Object.keys(studentsDb).forEach(key => {
+                const s = studentsDb[key];
+                const isCurrent = (s.name === loggedInUser);
                 
-                <article class="project-card">
-                    <div class="project-content">
-                        <h3>Street Bites</h3>
-                        <p>A joint collaborative responsive snack vendor website layout built using clean structural HTML rules.</p>
+                const row = document.createElement("div");
+                row.className = `student-row ${isCurrent ? 'highlight' : ''}`;
+                row.innerHTML = `
+                    <span style="font-size:14px; color:#f3f4f6;">${s.name} ${isCurrent ? '<strong style="color:#3b82f6;">(You)</strong>' : ''}</span>
+                    <div>
+                        <div class="bar-bg"><div class="bar-fill" style="width: ${s.progress};"></div></div>
+                        <span style="font-size:13px; font-weight:700; color:#f59e0b;">${s.progress}</span>
                     </div>
-                </article>
+                `;
+                container.appendChild(row);
+            });
+        }
 
-                <article class="project-card">
-                    <div class="project-content">
-                        <h3>CourseHub Dashboard</h3>
-                        <p>An LMS dashboard layout for custom premium courses with robust student login authentication tracking properties.</p>
-                    </div>
-                </article>
-
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact">
-            <h2>Contact Details</h2>
-            <p>Feel free to reach out for collaboration or any development queries.</p>
-            <article class="contact-info">
-                <ul>
-                    <li><strong>Location:</strong> Faisalabad, Pakistan</li>
-                    <li><strong>Email:</strong> hania.dev@example.com</li>
-                    <li><strong>GitHub:</strong> github.com/your-username</li>
-                </ul>
-            </article>
-        </section>
-
-    </main>
-
-    <!-- Footer Summary -->
-    <footer>
-        <p>&copy; 2026 Hania. Built with Semantic HTML tags.</p>
-    </footer>
-
+        function toggleModal(show) {
+            document.getElementById("leaderboard-modal").style.display = show ? "flex" : "none";
+        }
+    </script>
 </body>
 </html>
