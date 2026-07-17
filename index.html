@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CourseHub - Canva Premium Mastery</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0b0f19;
+            color: #f1f5f9;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Login Screen Overlay */
+        #login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0b0f19;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .login-card {
+            background-color: #111827;
+            border: 1px solid #1f2937;
+            padding: 40px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .login-card h2 {
+            margin-bottom: 8px;
+            font-size: 24px;
+            color: #ffffff;
+        }
+
+        .login-card p {
+            color: #9ca3af;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .input-group {
+            text-align: left;
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            color: #9ca3af;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            background-color: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 14px;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #6366f1;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+
+        .login-btn:hover {
+            background-color: #4f46e5;
+        }
+
+        .error-msg {
+            color: #ef4444;
+            font-size: 13px;
+            margin-top: 12px;
+            display: none;
+        }
+
+        /* Main Portal Layout */
+        #portal-container {
+            display: none;
+            height: 100vh;
+            grid-template-columns: 300px 1fr;
+        }
+
+        /* Left Playlist Sidebar */
+        .sidebar {
+            background-color: #111827;
+            border-right: 1px solid #1f2937;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #1f2937;
+        }
+
+        .brand-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .playlist-title {
+            padding: 15px 20px 5px 20px;
+            font-size: 12px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .playlist-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #1f2937;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .playlist-item:hover, .playlist-item.active {
+            background-color: #1f2937;
+        }
+
+        .playlist-item .video-num {
+            font-size: 11px;
+            color: #6366f1;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .playlist-item .video-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #e5e7eb;
+        }
+
+        /* Top Progress Bar and User Profile Area */
+        .top-navbar {
+            grid-column: 2;
+            height: 60px;
+            background-color: #111827;
+            border-bottom: 1px solid #1f2937;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 300px;
+            z-index: 100;
+        }
+
+        .progress-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: 50%;
+        }
+
+        .progress-text {
+            font-size: 13px;
+            color: #9ca3af;
+            white-space: nowrap;
+        }
+
+        .progress-container-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #1f2937;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #6366f1, #3b82f6);
+            transition: width 0.4s ease;
+        }
+
+        .user-badge {
+            background-color: #1f2937;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #6366f1;
+            font-weight: 600;
+            border: 1px solid #374151;
+        }
+
+        /* Main Workspace Content Area */
+        .main-content {
+            padding: 80px 30px 30px 30px;
+            overflow-y: auto;
+            background-color: #0b0f19;
+        }
+
+        .video-player-container {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background-color: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #1f2937;
+            margin-bottom: 25px;
+        }
+
+        .video-player-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .content-header-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+
+        /* Topics Accordion & Checklist */
+        .section-box {
+            background-color: #111827;
+            border: 1px solid #1f2937;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 16px 20px;
+            background-color: #161e2e;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #1f2937;
+        }
+
+        .section-header h3 {
+            font-size: 15px;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .section-header .time-stamp {
+            font-size: 12px;
+            color: #6366f1;
+            background-color: rgba(99, 102, 241, 0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .section-body {
+            padding: 15px 20px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #1f2937;
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-top: 3px;
+            width: 16px;
+            height: 16px;
+            accent-color: #6366f1;
+            cursor: pointer;
+        }
+
+        .checklist-item label {
+            font-size: 14px;
+            color: #9ca3af;
+            cursor: pointer;
+            line-height: 1.4;
+        }
+
+        .checklist-item input[type="checkbox"]:checked + label {
+            color: #4b5563;
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Login Module -->
+    <div id="login-screen">
+        <div class="login-card">
+            <h2>Welcome Back</h2>
+            <p>Sign in to continue your learning journey</p>
+            
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter username">
+            </div>
+            
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter password">
+            </div>
+            
+            <button class="login-btn" onclick="validateLogin()">Sign In</button>
+            <div id="error-box" class="error-msg">Invalid username or password!</div>
+        </div>
+    </div>
+
+    <!-- Core LMS Dashboard Structure -->
+    <div id="portal-container">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="brand-title">🍿 CourseHub</div>
+            </div>
+            <div class="playlist-title">Course Modules</div>
+            
+            <div class="playlist-item active" onclick="loadVideoSection('intro', 0)">
+                <div class="video-num">MODULE 1</div>
+                <div class="video-title">Canva Intro & Setup</div>
+            </div>
+            <div class="playlist-item" onclick="loadVideoSection('branding', 2085)">
+                <div class="video-num">MODULE 2</div>
+                <div class="video-title">Branding, Posts & Logo</div>
+            </div>
+            <div class="playlist-item" onclick="loadVideoSection('advanced', 8379)">
+                <div class="video-num">MODULE 3</div>
+                <div class="video-title">Video Editing & Mockups</div>
+            </div>
+        </div>
+
+        <!-- Top Panel Area -->
+        <div class="top-navbar">
+            <div class="progress-wrapper">
+                <div class="progress-text">Overall Progress: <span id="progress-percent">0%</span></div>
+                <div class="progress-container-bar">
+                    <div id="progress-fill" class="progress-fill-bar"></div>
+                </div>
+            </div>
+            <div class="user-badge" id="display-user">STUDENT</div>
+        </div>
+
+        <!-- Dynamic Learning Area Container -->
+        <div class="main-content">
+            <div class="video-player-container">
+                <iframe id="course-video" src="https://www.youtube.com/embed/rXLvN1FEkOE?enablejsapi=1" allowfullscreen></iframe>
+            </div>
+            
+            <h2 class="content-header-title">Canva Basic to Pro Tracking Checklist</h2>
+
+            <!-- Module 1 Segment Topics -->
+            <div class="module-view-section" id="section-intro">
+                <div class="section-box">
+                    <div class="section-header" onclick="seekVideo(0)">
+                        <h3>1. Course Introduction & Setup</h3>
+                        <span class="time-stamp">00:00:00</span>
+                    </div>
+                    <div class="section-body">
+                        <div class="checklist-item">
+                            <input type="checkbox" id="chk-1" onchange="calculateGlobalProgress()">
+                            <label for="chk-1">Canva full UI Dashboard layout setup aur shortcuts ko samajhna.</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="chk-2" onchange="calculateGlobalProgress()">
+                            <label for="chk-2">Custom Dimensions set karna (Pixels, Inches aur Millimeters me farq).</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-box">
+                    <div class="section-header" onclick="seekVideo(380)">
+                        <h3>2. Free vs Canva Pro Capabilities</h3>
+                        <span class="time-stamp">00:06:20</span>
+                    </div>
+                    <div class="section-body">
+                        <div class="checklist-item">
+                            <input type="checkbox" id="chk-3" onchange="calculateGlobalProgress()">
+                            <label for="chk-3">Premium fonts overlay, transparency features, aur background remover tools explore karna.</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 2 Segment Topics -->
+            <div class="module-view-section" id="section-branding" style="display:none;">
+                <div class="section-box">
+                    <div class="section-header" onclick="seekVideo(2085)">
+                        <h3>3. Professional Social Media Content</h3>
+                        <span class="time-stamp">00:34:45</span>
+                    </div>
+                    <div class="section-body">
+                        <div class="checklist-item">
+                            <input type="checkbox" id="chk-4" onchange="calculateGlobalProgress()">
+                            <label for="chk-4">Modern premium minimal posters design rule aur alignments grid apply karna.</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="chk-5" onchange="calculateGlobalProgress()">
+                            <label for="chk-5">Instagram premium carousels structure continuous grid slices create karna.</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-box">
+                    <div class="section-header" onclick="seekVideo(5660)">
+                        <h3>4. Brand Identity & Logo Creation</h3>
+                        <span class="time-stamp">01:34:20</span>
+                    </div>
+                    <div class="section-body">
+                        <div class="checklist-item">
+                            <input type="checkbox" id="chk-6" onchange="calculateGlobalProgress()">
+                            <label for="chk-6">Brand Kit components (Color palettes mixing aur premium typography layers) generate karna.</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 3 Segment Topics -->
+            <div class="module-view-section" id="section-advanced" style="display:none;">
+                <div class="section-box">
+                    <div class="section-header" onclick="seekVideo(8379)">
+                        <h3>5. Advanced Video Editing & Animations</h3>
+                        <span class="time-stamp">02:19:39</span>
+                    </div>
+                    <div class="section-body">
+                        <div class="checklist-item">
+                            <input type="checkbox" id="chk-7" onchange="calculateGlobalProgress()">
+                            <label for="chk-7">Reels/Shorts transition framing aur advanced video layout properties apply karna.</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-box">
+                    <div class="section-header" onclick="seekVideo(12402)">
+                        <h3>6. Premium Mockups & Exporting Assets</h3>
+                        <span class="time-stamp">03:26:42</span>
+                    </div>
+                    <div class="section-body">
+                        <div class="checklist-item">
+                            <input type="checkbox" id="chk-8" onchange="calculateGlobalProgress()">
+                            <label for="chk-8">Smart Mockups mapping engine apply karna aur dynamic print placement setup templates create karna.</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Pre-configured Student Database containing authorized usernames and custom passwords matching team setup
+        const authorizedStudents = {
+            "noorfatima": "noor786",
+            "saba": "saba123",
+            "kiara": "kiara99",
+            "moeen": "moeen55",
+            "aneeqa": "aneeqa78",
+            "hashimkhan": "hashim01",
+            "rabiaz": "rabia88",
+            "atika": "atika44",
+            "rabiazahoor": "zahoor22",
+            "aymaamjad": "ayma101",
+            "danishraza": "danish99",
+            "hamzaalikhan": "hamza77",
+            "hania": "hania000",
+            "liza": "liza555",
+            "muhammadamaan": "amaan12",
+            "sanaullah": "sana786",
+            "iqrajameel": "iqra99"
+        };
+
+        let currentUsername = "";
+
+        function validateLogin() {
+            const userIn = document.getElementById("username").value.trim().toLowerCase();
+            const passIn = document.getElementById("password").value.trim();
+            const errorBox = document.getElementById("error-box");
+
+            if (authorizedStudents[userIn] && authorizedStudents[userIn] === passIn) {
+                currentUsername = userIn;
+                errorBox.style.display = "none";
+                document.getElementById("login-screen").style.display = "none";
+                document.getElementById("portal-container").style.display = "grid";
+                document.getElementById("display-user").innerText = userIn.toUpperCase();
+                
+                // Load previously saved individual check progress for this unique logged-in user
+                restoreStudentProgress();
+            } else {
+                errorBox.style.display = "block";
+            }
+        }
+
+        function loadVideoSection(sectionType, startSeconds) {
+            // Highlight selected item in sidebar
+            const items = document.querySelectorAll('.playlist-item');
+            items.forEach(el => el.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            // Toggle Content Checklist View
+            document.getElementById("section-intro").style.display = "none";
+            document.getElementById("section-branding").style.display = "none";
+            document.getElementById("section-advanced").style.display = "none";
+
+            document.getElementById("section-" + sectionType).style.display = "block";
+
+            // Update iframe source to targeted video timestamp
+            seekVideo(startSeconds);
+        }
+
+        function seekVideo(seconds) {
+            const iframe = document.getElementById("course-video");
+            iframe.src = "https://www.youtube.com/embed/rXLvN1FEkOE?start=" + seconds + "&autoplay=1&enablejsapi=1";
+        }
+
+        function calculateGlobalProgress() {
+            const checkboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]');
+            let checkedCount = 0;
+            let progressState = {};
+
+            checkboxes.forEach(box => {
+                progressState[box.id] = box.checked;
+                if (box.checked) checkedCount++;
+            });
+
+            const percent = Math.round((checkedCount / checkboxes.length) * 100);
+            document.getElementById("progress-percent").innerText = percent + "%";
+            document.getElementById("progress-fill").style.width = percent + "%";
+
+            // Save individual user-specific progress to browser's LocalStorage engine automatically
+            if (currentUsername) {
+                localStorage.setItem("progress_" + currentUsername, JSON.stringify(progressState));
+            }
+        }
+
+        function restoreStudentProgress() {
+            if (!currentUsername) return;
+            const savedData = localStorage.getItem("progress_" + currentUsername);
+            if (savedData) {
+                const progressSta
